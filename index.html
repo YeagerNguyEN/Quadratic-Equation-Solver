@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Giải phương trình bậc 2 — YEAGER NGUYEN</title>
+    <style>
+      :root {
+        --bg: linear-gradient(135deg, #dbeafe, #f0f9ff);
+        --card: #ffffffcc;
+        --accent: #2563eb;
+        --accent-light: #60a5fa;
+        --text: #1e293b;
+        --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        --radius: 1.5rem;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--accent);
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .card {
+        background: var(--card);
+        box-shadow: var(--shadow);
+        border-radius: var(--radius);
+        padding: 2rem;
+        width: 90%;
+        max-width: 480px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        animation: fadeIn 0.5s ease;
+      }
+
+      input {
+        width: 90%;
+        padding: 0.8rem;
+        margin: 0.5rem 0;
+        border: 1px solid #cbd5e1;
+        border-radius: 0.75rem;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.2s ease;
+      }
+
+      input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+      }
+
+      button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        margin-top: 1rem;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        background: var(--accent-light);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2);
+      }
+
+      #result {
+        margin-top: 1.5rem;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: #1e293b;
+      }
+
+      footer {
+        margin-top: 2rem;
+        font-size: 0.9rem;
+        color: #64748b;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Giải phương trình bậc 2</h1>
+      <p>
+        Nhập các hệ số a, b, c của phương trình
+        <strong>ax² + bx + c = 0</strong>
+      </p>
+      <input id="a" type="number" placeholder="Nhập a" />
+      <input id="b" type="number" placeholder="Nhập b" />
+      <input id="c" type="number" placeholder="Nhập c" />
+      <button onclick="solve()">Giải phương trình</button>
+      <div id="result"></div>
+    </div>
+
+    <footer>YEAGER NGUYEN</footer>
+
+    <script>
+      function solve() {
+        const a = parseFloat(document.getElementById("a").value);
+        const b = parseFloat(document.getElementById("b").value);
+        const c = parseFloat(document.getElementById("c").value);
+        const resultDiv = document.getElementById("result");
+
+        if (isNaN(a) || isNaN(b) || isNaN(c)) {
+          resultDiv.innerHTML = "Vui lòng nhập đủ 3 hệ số a, b, c.";
+          return;
+        }
+
+        if (a === 0) {
+          if (b === 0) {
+            resultDiv.innerHTML =
+              c === 0
+                ? "Phương trình có vô số nghiệm."
+                : "Phương trình vô nghiệm.";
+          } else {
+            resultDiv.innerHTML = `Phương trình bậc nhất, có nghiệm x = ${(
+              -c / b
+            ).toFixed(2)}`;
+          }
+          return;
+        }
+
+        const delta = b * b - 4 * a * c;
+        let output = `<p>Δ = ${delta.toFixed(2)}</p>`;
+
+        if (delta > 0) {
+          const x1 = (-b + Math.sqrt(delta)) / (2 * a);
+          const x2 = (-b - Math.sqrt(delta)) / (2 * a);
+          output += `<p>Phương trình có 2 nghiệm phân biệt:</p>
+                   <p>x₁ = ${x1.toFixed(2)}</p>
+                   <p>x₂ = ${x2.toFixed(2)}</p>`;
+        } else if (delta === 0) {
+          const x = -b / (2 * a);
+          output += `<p>Phương trình có nghiệm kép:</p><p>x₁ = x₂ = ${x.toFixed(
+            2
+          )}</p>`;
+        } else {
+          const real = (-b / (2 * a)).toFixed(2);
+          const imag = (Math.sqrt(-delta) / (2 * a)).toFixed(2);
+          output += `<p>Phương trình có 2 nghiệm phức:</p>
+                   <p>x₁ = ${real} + ${imag}i</p>
+                   <p>x₂ = ${real} - ${imag}i</p>`;
+        }
+
+        resultDiv.innerHTML = output;
+      }
+    </script>
+  </body>
+</html>
